@@ -1,0 +1,14 @@
+[V0.0.2]
+
+- Created custom item that spawns custom spider nest. Note: c_spawn("goobah_spawner")
+- Custom nest spawns Chesters
+
+
+[V0.0.3]
+
+-Implemented Character Art
+
+[V0.0.4]
+
+-Fixed Character Issues
+-Removed Excess Code
