@@ -1,6 +1,10 @@
 PrefabFiles = {
 	"suri",
 	"suri_none",
+    "goobah",
+    "goobah_coin",
+    "goobah_portal",
+    "goobah_spawner",
     "cyon",
 	"cyon_none",
     "meeta",
@@ -11,13 +15,13 @@ PrefabFiles = {
 	"echo_none",
     "cyoncane",
     "hat_cyon",
-    "hat_meeta",
+    "hat_meeta",    
 }
 
 Assets = {
    -- Asset("SOUNDPACKAGE", "sound/suri.fev"),
-   -- Asset("SOUND", "sound/suri.fsb"),
-    
+   -- Asset("SOUND", "sound/suri.fdp"),    
+  
     Asset( "IMAGE", "images/saveslot_portraits/suri.tex" ),
     Asset( "ATLAS", "images/saveslot_portraits/suri.xml" ),
 
@@ -237,6 +241,18 @@ STRINGS.SKIN_NAMES.echo_none = "echo"
 STRINGS.NAMES.CYONCANE = "Cyon's Cane"
 STRINGS.NAMES.CYONHAT = "Cyon's Hat"
 STRINGS.NAMES.MEETAHAT = "Meeta's Hat"
+
+--Custom item text
+NAMES.GOOBAH_SPAWNER = "Goobah Spawner"
+GENERIC.GOOBAH_SPAWNER = "Goobah?"
+NAMES.GOOBAH_PORTAL = "Goobah Portal"
+GENERIC.GOOBAH_PORTAL = "Goobah?"
+NAMES.GOOBAH_COIN = "Goobah Coin"
+GENERIC.GOOBAH_COIN = "Maybe a Goobah might want this?"
+
+--Custom creatures
+NAMES.GOOBAH = "Goobah"
+GENERIC.GOOBAH = "Hallo Goobah!"
 
 local skin_modes = {
     { 
