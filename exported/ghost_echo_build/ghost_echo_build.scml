@@ -71,15 +71,15 @@
         <file id="15" name="ghost_tail/ghost_tail-15.png" width="228" height="400" pivot_x="0.470393" pivot_y="-0.29306"/>
     </folder>
     <folder id="4" name="ghost_Hat">
-        <file id="0" name="ghost_Hat/ghost_Hat-0.png" width="266" height="167" pivot_x="0.524791" pivot_y="0.451835"/>
+        <file id="0" name="ghost_Hat/ghost_Hat-0.png" width="242" height="149" pivot_x="0.472098" pivot_y="0.709642"/>
     </folder>
     <entity id="0" name="BUILD_PLAYER">
         <animation id="0" name="anim" length="100" interval="100">
             <mainline>
                 <key id="0">
                     <object_ref id="0" timeline="1" key="0" z_index="0"/>
-                    <object_ref id="1" timeline="0" key="0" z_index="1"/>
-                    <object_ref id="2" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="0" key="0" z_index="2"/>
                 </key>
             </mainline>
             <timeline id="0" name="ghost_eyes">
@@ -94,7 +94,7 @@
             </timeline>
             <timeline id="2" name="ghost_Hat-0">
                 <key id="0" spin="0">
-                    <object folder="4" file="0" x="1.15669" y="475.45372" angle="0"/>
+                    <object folder="4" file="0" x="1.15669" y="475.45372"/>
                 </key>
             </timeline>
         </animation>
