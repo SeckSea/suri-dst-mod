@@ -44,6 +44,18 @@ local function onload(inst)
     end
 end
 
+local function checksanity(inst)
+    local sanity = inst.components.sanity:GetPercent()
+    if sanity ~= nil and not inst.components.health:IsDead() then
+        if sanity == 1 then
+            local damage_multiplier = 2 * (1 + sanity)
+            inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        else
+            inst.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_sanity")
+        end
+    end
+end
+
 local common_postinit = function(inst) 
 	inst:AddTag("")
 	inst.MiniMapEntity:SetIcon( "maeve.tex" )
@@ -60,7 +72,8 @@ local master_postinit = function(inst)
 	
     inst.components.combat.damagemultiplier = 1.0
 	inst.components.hunger.hungerrate = 1.0 * TUNING.WILSON_HUNGER_RATE
-
+    
+    inst:ListenForEvent("sanitydelta", checksanity)
     
 	inst.OnLoad = onload
     inst.OnNewSpawn = onload

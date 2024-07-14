@@ -19,9 +19,9 @@ PrefabFiles = {
 }
 
 Assets = {
-    Asset("SOUNDPACKAGE", "sound/suri.fev"),
-    Asset("SOUND", "sound/suri.fdp"),
-    
+   -- Asset("SOUNDPACKAGE", "sound/suri.fev"),
+   -- Asset("SOUND", "sound/suri.fdp"),    
+  
     Asset( "IMAGE", "images/saveslot_portraits/suri.tex" ),
     Asset( "ATLAS", "images/saveslot_portraits/suri.xml" ),
 
@@ -193,7 +193,7 @@ local GENERIC = STRINGS.CHARACTERS.GENERIC.DESCRIBE
 STRINGS.CHARACTER_TITLES.suri = "The Goobah Emperor"
 STRINGS.CHARACTER_NAMES.suri = "Suri Solari"
 STRINGS.CHARACTER_DESCRIPTIONS.suri = "*Goobism"
-STRINGS.CHARACTER_QUOTES.suri = "\"Wah Rrah grahh\""
+STRINGS.CHARACTER_QUOTES.suri = "\"Wahh Rrah Grahh\""
 STRINGS.CHARACTER_SURVIVABILITY.suri = "Slim"
 --
 STRINGS.CHARACTER_TITLES.cyon = "The Tanuki Thief"
