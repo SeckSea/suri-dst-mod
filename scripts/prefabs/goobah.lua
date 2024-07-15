@@ -1,288 +1,248 @@
-local assets =
-{
-    Asset("PKGREF", "anim/ui_chester_shadow_3x4.zip"), --switched to portal version
-    Asset("ANIM", "anim/ui_portal_shadow_3x4.zip"),
-    Asset("ANIM", "anim/ui_chest_3x3.zip"),
+local brain = require("brains/crittersbrain")
 
-    Asset("ANIM", "anim/chester.zip"),
-    Asset("ANIM", "anim/chester_build.zip"),
-    Asset("ANIM", "anim/chester_shadow_build.zip"),
-    Asset("ANIM", "anim/chester_snow_build.zip"),
-    Asset("ANIM", "anim/shadow_breath.zip"),
-    Asset("ANIM", "anim/tophat_fx.zip"),
+local WAKE_TO_FOLLOW_DISTANCE = 6
+local SLEEP_NEAR_LEADER_DISTANCE = 5
 
-    Asset("SOUND", "sound/chester.fsb"),
+local HUNGRY_PERISH_PERCENT = 0.5 -- matches stale tag
+local STARVING_PERISH_PERCENT = 0.2 -- matches spoiked tag
 
-    Asset("MINIMAP_IMAGE", "chester"),
-    Asset("MINIMAP_IMAGE", "chestershadow"),
-    Asset("MINIMAP_IMAGE", "chestersnow"),
-}
-
-local assets_swirl =
-{
-	Asset("ANIM", "anim/chester.zip"),
-	Asset("ANIM", "anim/tophat_fx.zip"),
-}
-
-local prefabs =
-{
-    "chester_eyebone",
-    "chesterlight",
-    "chester_transform_fx",
-    "globalmapiconunderfog",
-	"frostbreath",
-	"shadow_chester_swirl_fx",
-}
-
-local brain = require "brains/goobahbrain"
-
-local ChesterStateNames =
-{
-	"NORMAL",
-	"SNOW",
-	"SHADOW",
-}
-local ChesterState = table.invert(ChesterStateNames)
-
-local sounds =
-{
-    hurt = "dontstarve/creatures/chester/hurt",
-    pant = "dontstarve/creatures/chester/pant",
-    death = "dontstarve/creatures/chester/death",
-    open = "dontstarve/creatures/chester/open",
-    close = "dontstarve/creatures/chester/close",
-    pop = "dontstarve/creatures/chester/pop",
-    boing = "dontstarve/creatures/chester/boing",
-    lick = "dontstarve/creatures/chester/lick",
-}
-
-local WAKE_TO_FOLLOW_DISTANCE = 14
-local SLEEP_NEAR_LEADER_DISTANCE = 7
+local function IsLeaderSleeping(inst)
+    return inst.components.follower.leader and inst.components.follower.leader:HasTag("sleeping")
+end
 
 local function ShouldWakeUp(inst)
-    return DefaultWakeTest(inst) or not inst.components.follower:IsNearLeader(WAKE_TO_FOLLOW_DISTANCE)
+    return not (IsLeaderSleeping(inst)) or not inst.components.follower:IsNearLeader(WAKE_TO_FOLLOW_DISTANCE)
 end
 
 local function ShouldSleep(inst)
-    --print(inst, "ShouldSleep", DefaultSleepTest(inst), not inst.sg:HasStateTag("open"), inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE))
-    return DefaultSleepTest(inst) and not inst.sg:HasStateTag("open") and inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE) and not TheWorld.state.isfullmoon
+    return (IsLeaderSleeping(inst) or IsLeaderTellingStory(inst)) and inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE)
 end
 
-local function ShouldKeepTarget()
-    return false -- chester can't attack, and won't sleep if he has a target
-end
-
-
-
--- eye bone was killed/destroyed
-local function OnStopFollowing(inst)
-    --print("chester - OnStopFollowing")
-    inst:RemoveTag("companion")
-end
-
-local function OnStartFollowing(inst)
-    --print("chester - OnStartFollowing")
-    inst:AddTag("companion")
-end
-
-local function OnClientChesterStateDirty(inst)
-	ToggleBreath(inst)
-end
-
-local function OnHaunt(inst)
-    if math.random() <= TUNING.HAUNT_CHANCE_ALWAYS then
-        inst.components.hauntable.panic = true
-        inst.components.hauntable.panictimer = TUNING.HAUNT_PANIC_TIME_SMALL
-        inst.components.hauntable.hauntvalue = TUNING.HAUNT_SMALL
-        return true
+-------------------------------------------------------------------------------
+local function GetPeepChance(inst)
+    local hunger_percent = inst.components.hunger:GetPercent()
+    if hunger_percent <= 0 then
+        return 0.01
     end
-    return false
+
+    return 0
 end
 
--- Make Goobahs follow player
-
---[[local function ShouldAcceptItem(inst, item)
-    return true
-end]]
-
-local function OnGetItemFromPlayer(inst, giver, item)
-    if(item.prefab == "rocks") then
-        giver.components.leader:AddFollower(inst)
-        return true
-    end
+local function IsAffectionate(inst)
     return true
 end
 
+local function IsPlayful(inst)
+	return true
+end
 
+local function IsSuperCute(inst)
+	return true
+end
 
-local function create_goobah()
+local assets =
+{
+    Asset("ANIM", "anim/pupington_build.zip"),
+    Asset("ANIM", "anim/pupington_basic.zip"),
+    Asset("ANIM", "anim/pupington_emotes.zip"),
+    Asset("ANIM", "anim/pupington_traits.zip"),
+    Asset("ANIM", "anim/pupington_jump.zip"),
+
+    Asset("ANIM", "anim/pupington_woby_build.zip"),
+    Asset("ANIM", "anim/pupington_transform.zip"),
+    Asset("ANIM", "anim/woby_big_build.zip"),
+
+    Asset("ANIM", "anim/ui_woby_3x3.zip"),
+}
+
+local prefabs = {}
+
+local function LinkToPlayer(inst, player)
+    inst._playerlink = player
+    inst.components.follower:SetLeader(player)
+
+    inst:ListenForEvent("onremove", inst._onlostplayerlink, player)
+end
+
+local function OnPlayerLinkDespawn(inst, forcedrop)
+	if inst.components.container ~= nil then
+		inst.components.container:Close()
+		inst.components.container.canbeopened = false
+
+		if forcedrop or GetGameModeProperty("drop_everything_on_despawn") then
+			inst.components.container:DropEverything()
+		else
+			inst.components.container:DropEverythingWithTag("irreplaceable")
+		end
+	end
+
+	if inst.components.drownable ~= nil then
+		inst.components.drownable.enabled = false
+	end
+
+	local fx = SpawnPrefab(inst.spawnfx)
+	fx.entity:SetParent(inst.entity)
+
+	inst.components.colourtweener:StartTween({ 0, 0, 0, 1 }, 13 * FRAMES, inst.Remove)
+
+	if not inst.sg:HasStateTag("busy") then
+		inst.sg:GoToState("despawn")
+	end
+end
+
+local function FinishTransformation(inst)
+    local items = inst.components.container:RemoveAllItems()
+	local player = inst._playerlink
+    local new_woby = ReplacePrefab(inst, "wobybig")
+
+    for i,v in ipairs(items) do
+        new_woby.components.container:GiveItem(v)
+    end
+
+	if player ~= nil then
+		new_woby:LinkToPlayer(player)
+	    player:OnWobyTransformed(new_woby)
+	end
+end
+
+local function OnOpen(inst)
+end
+
+local function OnClose(inst)
+end
+
+local function OnStarving(inst)
+    -- Critters don't have the health component, so we override the starvefn to prevent a crash
+end
+
+local function TriggerTransformation(inst)
+    if inst.sg.currentstate.name ~= "transform" then
+        inst.persists = false
+
+        if inst.components.container:IsOpen() then
+            inst.components.container:Close()
+        end
+
+        inst:AddTag("NOCLICK")
+        inst:PushEvent("transform")
+    end
+end
+
+local function OnHungerDelta(inst, data)
+    if data.newpercent >= 0.95 then
+        TriggerTransformation(inst)
+    end
+end
+
+local function fn()
     local inst = CreateEntity()
 
     inst.entity:AddTransform()
     inst.entity:AddAnimState()
     inst.entity:AddSoundEmitter()
     inst.entity:AddDynamicShadow()
-    inst.entity:AddMiniMapEntity()
     inst.entity:AddNetwork()
 
-    MakeCharacterPhysics(inst, 75, .5)
-    inst.Physics:SetCollisionGroup(COLLISION.CHARACTERS)
-    inst.Physics:ClearCollisionMask()
-    inst.Physics:CollidesWith(COLLISION.WORLD)
-    inst.Physics:CollidesWith(COLLISION.OBSTACLES)
-    inst.Physics:CollidesWith(COLLISION.CHARACTERS)
-
-    inst:AddTag("companion")
-    inst:AddTag("character")
-    inst:AddTag("scarytoprey")
-    inst:AddTag("goobah")
-    inst:AddTag("notraptrigger")
-    inst:AddTag("noauradamage")
-    inst:AddTag("trader")
-
-    inst.MiniMapEntity:SetIcon("chester.png")
-    inst.MiniMapEntity:SetCanUseCache(false)
-
-    inst.AnimState:SetBank("chester")
-    inst.AnimState:SetBuild("chester_build")
-
-    inst.DynamicShadow:SetSize(2, 1.5)
-
+    inst.DynamicShadow:SetSize(1, .33)
     inst.Transform:SetFourFaced()
 
-	inst._chesterstate = net_tinybyte(inst.GUID, "chester._chesterstate", "chesterstatedirty")
-	inst._chesterstate:set(ChesterState.NORMAL)
+    inst.AnimState:SetBank("pupington")
+    inst.AnimState:SetBuild("pupington_woby_build")
+    inst.AnimState:PlayAnimation("idle_loop")
 
-	inst._frostbreathtrigger = net_event(inst.GUID, "chester._frostbreathtrigger")
+    MakeCharacterPhysics(inst, 1, .5)
 
-	inst:AddComponent("container_proxy")
-	inst.components.container_proxy:SetCanBeOpened(false)
+    -- critters dont really go do entitysleep as it triggers a teleport to near the owner, so no point in hitting the physics engine.
+	inst.Physics:SetDontRemoveOnSleep(true)
+
+    inst:AddTag("critter")
+    inst:AddTag("fedbyall")
+    inst:AddTag("companion")
+    inst:AddTag("notraptrigger")
+    inst:AddTag("noauradamage")
+    inst:AddTag("small_livestock")
+    inst:AddTag("noabandon")
+    inst:AddTag("NOBLOCK")
+
+    inst:AddComponent("spawnfader")
 
     inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
-		inst:ListenForEvent("chesterstatedirty", OnClientChesterStateDirty)
         return inst
     end
 
-    ------------------------------------------
-    inst:AddComponent("maprevealable")
-    inst.components.maprevealable:SetIconPrefab("globalmapiconunderfog")
+	inst.favoritefood = "monsterlasagna"
 
-    inst:AddComponent("combat")
-    inst.components.combat.hiteffectsymbol = "chester_body"
-    inst.components.combat:SetKeepTargetFunction(ShouldKeepTarget)
+    inst.GetPeepChance = GetPeepChance
+    inst.IsAffectionate = IsAffectionate
+    inst.IsSuperCute = IsSuperCute
+    inst.IsPlayful = IsPlayful
 
-    inst:AddComponent("health")
-    inst.components.health:SetMaxHealth(TUNING.CHESTER_HEALTH)
-    inst.components.health:StartRegen(TUNING.CHESTER_HEALTH_REGEN_AMOUNT, TUNING.CHESTER_HEALTH_REGEN_PERIOD)
+	inst.playmatetags = {"critter"}
 
     inst:AddComponent("inspectable")
-    inst.components.inspectable:RecordViews()
-
-    inst:AddComponent("locomotor")
-    inst.components.locomotor.walkspeed = 3
-    inst.components.locomotor.runspeed = 7
-    inst.components.locomotor:SetAllowPlatformHopping(true)
-
-    inst:AddComponent("trader")
-    -- IF TRADING FAILS AGAIN CHECK HERE
-    --inst.components.trader:SetAcceptTest(true)
-    inst.components.trader.onaccept = OnGetItemFromPlayer
-    
-    inst.components.trader.deleteitemonaccept = false
-
-
-    inst:AddComponent("embarker")
-    inst:AddComponent("drownable")
 
     inst:AddComponent("follower")
-    --inst:ListenForEvent("stopfollowing", OnStopFollowing)
-    inst:ListenForEvent("startfollowing", OnStartFollowing)
-    --inst.components.follower:SetLeader("suri")
+    inst.components.follower:KeepLeaderOnAttacked()
+    inst.components.follower.keepdeadleader = true
+    inst.components.follower.keepleaderduringminigame = true
 
     inst:AddComponent("knownlocations")
 
-    MakeSmallBurnableCharacter(inst, "chester_body")
-
-	--SwitchToContainer(inst)
-
     inst:AddComponent("sleeper")
-    inst.components.sleeper.watchlight = true
     inst.components.sleeper:SetResistance(3)
     inst.components.sleeper.testperiod = GetRandomWithVariance(6, 2)
     inst.components.sleeper:SetSleepTest(ShouldSleep)
     inst.components.sleeper:SetWakeTest(ShouldWakeUp)
 
-    MakeHauntableDropFirstItem(inst)
-    AddHauntableCustomReaction(inst, OnHaunt, false, false, true)
+    inst:AddComponent("eater")
+    inst.components.eater:SetDiet({ FOODTYPE.MONSTER }, { FOODTYPE.MONSTER })
 
-    inst.sounds = sounds
+    inst:AddComponent("hunger")
+    inst.components.hunger:SetMax(TUNING.WOBY_SMALL_HUNGER)
+    inst.components.hunger:SetRate(TUNING.WOBY_SMALL_HUNGER_RATE)
+    inst.components.hunger:SetOverrideStarveFn(OnStarving)
+    inst.components.hunger:SetPercent(0)
 
-    inst:SetStateGraph("SGchester")
-    inst.sg:GoToState("idle")
+    inst:AddComponent("locomotor")
+    inst.components.locomotor:EnableGroundSpeedMultiplier(true)
+    inst.components.locomotor:SetTriggersCreep(false)
+    inst.components.locomotor.softstop = true
+    inst.components.locomotor.walkspeed = TUNING.CRITTER_WALK_SPEED
+
+    inst.components.locomotor:SetAllowPlatformHopping(true)
+
+    inst:AddComponent("embarker")
+    inst.components.embarker.embark_speed = inst.components.locomotor.walkspeed
+    inst:AddComponent("drownable")
+
+	inst:AddComponent("colourtweener")
+
+    inst:AddComponent("crittertraits")
+    inst:AddComponent("timer")
+
+    inst:AddComponent("container")
+    inst.components.container:WidgetSetup("wobysmall")
+    inst.components.container.onopenfn = OnOpen
+    inst.components.container.onclosefn = OnClose
 
     inst:SetBrain(brain)
+    inst:SetStateGraph("SGwobysmall")
 
-	--inst.DebugMorph = DebugMorph
-    --inst.MorphChester = MorphChester
-    --inst:WatchWorldState("isfullmoon", CheckForMorph)
-    --inst:ListenForEvent("onclose", CheckForMorph)
+    inst:ListenForEvent("hungerdelta", OnHungerDelta)
 
-    --[[inst.OnSave = OnSave
-    inst.OnPreLoad = OnPreLoad
-	inst.OnLoadPostPass = OnLoadPostPass
-    inst.SetBuild = SetBuild -- NOTES(JBK): This is for skins.]]
+    inst.LinkToPlayer = LinkToPlayer
+	inst.OnPlayerLinkDespawn = OnPlayerLinkDespawn
+	inst._onlostplayerlink = function(player) inst._playerlink = nil end
+
+    inst.FinishTransformation = FinishTransformation
+
+    inst.persists = false
+
+	inst.spawnfx = "spawn_fx_small"
 
     return inst
 end
 
---------------------------------------------------------------------------
-
-local function ReleaseSwirl(inst)
-	local x, y, z = inst.Transform:GetWorldPosition()
-	local rot = inst.Transform:GetRotation()
-	inst.entity:SetParent(nil)
-	inst.Transform:SetPosition(x, y, z)
-	inst.Transform:SetRotation(rot)
-	inst.AnimState:PlayAnimation("swirl_pst")
-	inst:ListenForEvent("animover", inst.Remove)
-end
-
-local function swirl_fn()
-	local inst = CreateEntity()
-
-	inst.entity:AddTransform()
-	inst.entity:AddAnimState()
-	inst.entity:AddNetwork()
-
-	inst:AddTag("NOCLICK")
-	--inst:AddTag("FX")
-	inst:AddTag("CLASSIFIED") --unfortunately, in DST, "FX" still makes it mouseover when parented
-
-	inst.Transform:SetFourFaced()
-
-	inst.AnimState:SetBank("chester")
-	inst.AnimState:SetBuild("tophat_fx")
-	inst.AnimState:PlayAnimation("swirl_pre")
-	inst.AnimState:SetFinalOffset(1)
-
-	inst.entity:SetPristine()
-
-	if not TheWorld.ismastersim then
-		return inst
-	end
-
-	inst.AnimState:PushAnimation("swirl_loop", true)
-
-	inst.persists = false
-
-	inst.ReleaseSwirl = ReleaseSwirl
-
-	return inst
-end
-
---------------------------------------------------------------------------
-
-return Prefab("goobah", create_goobah, assets, prefabs),
-	Prefab("shadow_chester_swirl_fx", swirl_fn, assets_swirl)
+return Prefab("wobysmall", fn, assets, prefabs)

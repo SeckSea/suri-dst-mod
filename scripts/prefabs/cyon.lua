@@ -76,7 +76,7 @@ end
 
 
 local common_postinit = function(inst) 
-	inst:AddTag("")
+	inst:AddTag("tanuki")
 	inst.MiniMapEntity:SetIcon( "cyon.tex" )
 end
 
