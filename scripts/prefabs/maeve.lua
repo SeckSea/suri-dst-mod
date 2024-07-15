@@ -47,11 +47,17 @@ end
 local function checksanity(inst)
     local sanity = inst.components.sanity:GetPercent()
     if sanity ~= nil and not inst.components.health:IsDead() then
-        if sanity == 1 then
-            local damage_multiplier = 2 * (1 + sanity)
+        if sanity >= .9 then
+            local damage_multiplier = 1.7
             inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        elseif (sanity >= 0.6) or (sanity < 0.9) then
+                local damage_multiplier = 1.3
+                inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        elseif (sanity >= 0.3) or (sanity < 0.6) then
+                inst.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_sanity")   
         else
-            inst.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_sanity")
+            local damage_multiplier = 0.75
+            inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
         end
     end
 end
