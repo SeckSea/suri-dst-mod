@@ -12,6 +12,10 @@ local function OnEquip(inst, owner)
 	owner.AnimState:Show("HAIR_HAT")
 	owner.AnimState:Hide("HAIR_NOHAT")
 	owner.AnimState:Hide("HAIR")
+
+	if owner:HasTag("tanuki") then
+		owner.components.combat.externaldamagemultipliers:SetModifier(inst, 1.2, "damage_from_hat")
+	end
 	
 	if owner:HasTag("player") then
 		owner.AnimState:Hide("HEAD")
@@ -29,6 +33,10 @@ local function OnUnequip(inst, owner)
 	owner.AnimState:Hide("HAIR_HAT")
 	owner.AnimState:Show("HAIR_NOHAT")
 	owner.AnimState:Show("HAIR")
+
+	if owner:HasTag("tanuki") then
+		owner.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_hat")  
+	end
 
 	if owner:HasTag("player") then
 		owner.AnimState:Show("HEAD")
