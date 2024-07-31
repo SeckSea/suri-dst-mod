@@ -13,6 +13,8 @@ local function OnEquip(inst, owner)
 	owner.AnimState:Hide("HAIR_NOHAT")
 	owner.AnimState:Hide("HAIR")
 	
+	inst.components.equippable.dapperness = TUNING.DAPPERNESS_SMALL
+
 	if owner:HasTag("player") then
 		owner.AnimState:Hide("HEAD")
 		owner.AnimState:Show("HEAD_HAT")

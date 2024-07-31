@@ -9,13 +9,13 @@ local prefabs =
     "",
 }
 
-TUNING.MAEVE_HEALTH = 180
+TUNING.MAEVE_HEALTH = 150
 TUNING.MAEVE_HUNGER = 125
-TUNING.MAEVE_SANITY = 130
+TUNING.MAEVE_SANITY = 125
 
 
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.maeve = {
-	"goldnugget",
+	"maevesword",
 }
 
 local start_inv = {}
@@ -47,19 +47,40 @@ end
 local function checksanity(inst)
     local sanity = inst.components.sanity:GetPercent()
     if sanity ~= nil and not inst.components.health:IsDead() then
-        if sanity >= .9 then
+        if sanity >= .95 then
             local damage_multiplier = 1.7
             inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
-        elseif (sanity >= 0.6) or (sanity < 0.9) then
-                local damage_multiplier = 1.3
-                inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
-        elseif (sanity >= 0.3) or (sanity < 0.6) then
-                inst.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_sanity")   
-        else
-            local damage_multiplier = 0.75
+        elseif (sanity >= 0.8) or (sanity < 0.95) then
+            local damage_multiplier = 1.5
             inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        elseif (sanity >= 0.6) or (sanity < 0.8) then
+                local damage_multiplier = 1.2
+                inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        elseif (sanity >= 0.4) or (sanity < 0.6) then
+                inst.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_sanity")   
+        elseif (sanity >= 0.2) or (sanity < 0.4) then
+                local damage_multiplier = 0.8
+                inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
+        else
+                local damage_multiplier = 0.5
+                inst.components.combat.externaldamagemultipliers:SetModifier(inst, damage_multiplier, "damage_from_sanity")
         end
     end
+end
+
+local MONSTER_TAGS = { "monster" }
+local function monstersanityfn(inst)
+	local x, y, z = inst.Transform:GetWorldPosition()
+	local delta = 0
+	local ents = TheSim:FindEntities(x, y, z, 10, MONSTER_TAGS)
+	for k, v in pairs(ents) do
+		if v ~= inst then
+			local bonus_sanity = -TUNING.SANITYAURA_MED
+			local distsq = math.max(inst:GetDistanceSqToInst(v), 1)
+			delta = delta + bonus_sanity / distsq
+		end
+	end
+	return delta
 end
 
 local common_postinit = function(inst) 
@@ -80,7 +101,8 @@ local master_postinit = function(inst)
 	inst.components.hunger.hungerrate = 1.0 * TUNING.WILSON_HUNGER_RATE
     
     inst:ListenForEvent("sanitydelta", checksanity)
-    
+    inst.components.sanity.custom_rate_fn = monstersanityfn
+
 	inst.OnLoad = onload
     inst.OnNewSpawn = onload
 	

@@ -1,4 +1,4 @@
-name = "2The T2estin2g Things232"
+name = "I Did This Here"
 description = "A mod made for Suri Solari by her loyal followers; as thanks for all she does.\n\n<Credits>\n-Key Art: POWD3d4\n-Coding: SeckSea, MottledAbyss\n-Dialouge Lead: Ries(りえす)\n-Key Dialouge: The Covenant\n-Community Organizer: master117"
 
 author = "The Covenant"

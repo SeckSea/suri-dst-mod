@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0" name="potion01">
+        <file id="0" name="potion01/potion01-0.png" width="90" height="153" pivot_x="0.5" pivot_y="0.150327"/>
+    </folder>
+    <folder id="1" name="potion02">
+        <file id="0" name="potion02/potion02-0.png" width="100" height="130" pivot_x="0.518118" pivot_y="0.138212"/>
+    </folder>
+    <folder id="2" name="potion03">
+        <file id="0" name="potion03/potion03-0.png" width="107" height="128" pivot_x="0.476636" pivot_y="0.117188"/>
+    </folder>
+    <entity id="0" name="meetapotions">
+        <animation id="0" name="idle1" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="potion01-0">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="idle2" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="potion02-0">
+                <key id="0" spin="0">
+                    <object folder="1" file="0" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="2" name="idle3" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="potion03-0">
+                <key id="0" spin="0">
+                    <object folder="2" file="0" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

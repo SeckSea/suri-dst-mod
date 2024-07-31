@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0" name="maevesword_ground">
+        <file id="0" name="maevesword_ground/maevesword_ground-0.png" width="145" height="244" pivot_x="0.827586" pivot_y="0.077869"/>
+    </folder>
+    <folder id="1" name="swap_maevesword">
+        <file id="0" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="1" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="2" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="3" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="4" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="5" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="6" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="7" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+        <file id="8" name="swap_maevesword/swap_maevesword-0.png" width="68" height="339" pivot_x="0.470588" pivot_y="0.20944"/>
+    </folder>
+    <entity id="0" name="maevesword">
+        <animation id="0" name="idle" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="maevesword_ground-0">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="4" y="-3"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
