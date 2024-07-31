@@ -47,6 +47,8 @@ end
 
 local common_postinit = function(inst) 
 	inst:AddTag("")
+    inst:AddTag("handyperson")
+    inst:AddTag("fastbuilder")
 	inst.MiniMapEntity:SetIcon( "meeta.tex" )
 end
 

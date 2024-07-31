@@ -16,6 +16,7 @@ PrefabFiles = {
     "cyoncane",
     "hat_cyon",
     "hat_meeta",    
+    "maevesword",
 }
 
 Assets = {
@@ -129,6 +130,9 @@ Assets = {
 
     Asset( "IMAGE", "bigportraits/maeve.tex" ),
     Asset( "ATLAS", "bigportraits/maeve.xml" ),
+
+    Asset("IMAGE", "images/inventoryimages/maevesword.tex"),
+    Asset("ATLAS", "images/inventoryimages/maevesword.xml"),
 	
 	Asset( "IMAGE", "images/map_icons/maeve.tex" ),
 	Asset( "ATLAS", "images/map_icons/maeve.xml" ),
@@ -241,6 +245,7 @@ STRINGS.SKIN_NAMES.echo_none = "echo"
 STRINGS.NAMES.CYONCANE = "Cyon's Cane"
 STRINGS.NAMES.CYONHAT = "Cyon's Hat"
 STRINGS.NAMES.MEETAHAT = "Meeta's Hat"
+STRINGS.NAMES.MAEVESWORD = "Maeve's Katana"
 
 --Custom item text
 NAMES.GOOBAH_SPAWNER = "Goobah Spawner"
@@ -270,13 +275,19 @@ local cyon_items_override =
     cyonhat = {atlas = "images/inventoryimages/cyonhat.xml"},
 }
 
-local meets_items_override = 
+local meeta_items_override = 
 {
     meetahat = {atlas = "images/inventoryimages/meetahat.xml"},
 }
 
+local maeve_items_override = 
+{
+    maevesword = {atlas = "images/inventoryimages/maevesword.xml"},
+}
+
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, cyon_items_override) or cyon_items_override
-TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, meets_items_override) or meets_items_override
+TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, meeta_items_override) or meeta_items_override
+TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, maeve_items_override) or maeve_items_override
 
 AddModCharacter("suri", "FEMALE", skin_modes)
 AddModCharacter("cyon", "FEMALE", skin_modes)

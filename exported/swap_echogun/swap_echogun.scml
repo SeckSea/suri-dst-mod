@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0" name="swap_echogun">
+        <file id="0" name="swap_echogun/swap_echogun-0.png" width="95" height="72" pivot_x="0.147368" pivot_y="0.291667"/>
+        <file id="1" name="swap_echogun/swap_echogun-2.png" width="38" height="61" pivot_x="0.473684" pivot_y="0.229508"/>
+    </folder>
+    <folder id="1" name="echogun_ground">
+        <file id="0" name="echogun_ground/echogun_ground-0.png" width="61" height="110" pivot_x="0.42623" pivot_y="0.109091"/>
+    </folder>
+    <folder id="2" name="bullet">
+        <file id="0" name="bullet/bullet-0.png" width="37" height="86" pivot_x="0.513514" pivot_y="0.244186"/>
+    </folder>
+    <entity id="0" name="echogun">
+        <animation id="0" name="idle" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="echogun_ground-0">
+                <key id="0" spin="0">
+                    <object folder="1" file="0" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="dart_bullet" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="bullet-0">
+                <key id="0" spin="0">
+                    <object folder="2" file="0" x="38.15" y="-3.15" angle="87.154"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

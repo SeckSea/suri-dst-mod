@@ -9,7 +9,7 @@ local prefabs =
     "",
 }
 
-TUNING.SURI_HEALTH = 100
+TUNING.SURI_HEALTH = 150
 TUNING.SURI_HUNGER = 200
 TUNING.SURI_SANITY = 125
 
@@ -24,6 +24,12 @@ for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
 end
 
 local prefabs = FlattenTree(start_inv, true)
+
+local function GetFuelMasterBonus(inst, item, target)
+
+    -- The TAG "firefuellight" is used for items that are not campfires in that they won't incubate something but Willow should benefit from fueling it.
+    return (target:HasTag("firefuellight") or target:HasTag("campfire") or target.prefab == "nightlight") and TUNING.WILLOW_CAMPFIRE_FUEL_MULT or 1
+end
 
 local function onbecamehuman(inst)
 	inst.components.locomotor:SetExternalSpeedMultiplier(inst, "suri_speed_mod", 1)
@@ -45,7 +51,9 @@ local function onload(inst)
 end
 
 local common_postinit = function(inst) 
-	inst:AddTag("")
+	inst:AddTag("expertchef")
+    inst:AddTag("pyromaniac")
+    inst:AddTag("heatresistant")
 	inst.MiniMapEntity:SetIcon( "suri.tex" )
 end
 
@@ -59,11 +67,17 @@ local master_postinit = function(inst)
 	inst.components.sanity:SetMax(TUNING.SURI_SANITY)
 	
     inst.components.combat.damagemultiplier = 1.0
-	inst.components.hunger.hungerrate = 1.0 * TUNING.WILSON_HUNGER_RATE
+	inst.components.hunger.hungerrate = 1.15 * TUNING.WILSON_HUNGER_RATE
+
+    inst.components.temperature.inherentinsulation = -TUNING.INSULATION_SMALL
+    inst.components.temperature.inherentsummerinsulation = TUNING.INSULATION_SMALL
 
     
 	inst.OnLoad = onload
     inst.OnNewSpawn = onload
+
+    inst:AddComponent("fuelmaster")
+    inst.components.fuelmaster:SetBonusFn(GetFuelMasterBonus)
 	
 end
 
