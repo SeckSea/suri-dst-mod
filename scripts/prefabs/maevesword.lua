@@ -17,6 +17,10 @@ local function OnUnequip(inst, owner)
 	owner.AnimState:Show("ARM_normal") 
 end
 
+local function SanityHeal(inst, owner)
+	owner.components.sanity:DoDelta(1.5)
+end
+
 local function MainFunction()
     local inst = CreateEntity()
 	
@@ -58,6 +62,7 @@ local function MainFunction()
 
 	inst:AddComponent("weapon")
 	inst.components.weapon:SetDamage(TUNING.HAMBAT_DAMAGE)
+	inst.components.weapon:SetOnAttack(SanityHeal)
 
 	MakeHauntableLaunch(inst)
 
