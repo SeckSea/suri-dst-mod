@@ -14,13 +14,13 @@ TUNING.SURI_HUNGER = 200
 TUNING.SURI_SANITY = 125
 
 
-TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.suri = {
-	"goldnugget",
+TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.SURI = {
+	"goldcoins",
 }
 
 local start_inv = {}
 for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
-   start_inv[string.lower(k)] = v.suri
+   start_inv[string.lower(k)] = v.SURI
 end
 
 local prefabs = FlattenTree(start_inv, true)
@@ -54,7 +54,27 @@ local common_postinit = function(inst)
 	inst:AddTag("expertchef")
     inst:AddTag("pyromaniac")
     inst:AddTag("heatresistant")
+    inst:AddTag("dragoobah")
 	inst.MiniMapEntity:SetIcon( "suri.tex" )
+    inst:AddComponent("inventory")
+
+    local _Equip = inst.components.inventory.Equip	
+
+    inst.components.inventory.Equip = function(self, item, old_to_active)
+        if not item or not item.components.equippable or not item:IsValid() then
+            return		
+        end		
+        
+        if item.components.equippable.equipslot == EQUIPSLOTS.BODY or item.components.equippable.equipslot == EQUIPSLOTS.HEAD and not (item.prefab == "boarhat") then		
+            self:DropItem(item)
+            self:GiveItem(item)
+            if inst and inst.components.talker then
+                inst.components.talker:Say("Dragons have no need for clothes!")
+            end
+            return
+        end		
+        return _Equip(self, item, old_to_active)	
+    end
 end
 
 local master_postinit = function(inst)

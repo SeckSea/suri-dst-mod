@@ -17,6 +17,10 @@ PrefabFiles = {
     "hat_cyon",
     "hat_meeta",    
     "maevesword",
+    "goldcoins",
+    "potion01",
+    --"potion02",
+    --"potion03"
 }
 
 Assets = {
@@ -181,6 +185,13 @@ Assets = {
 	
 	Asset( "IMAGE", "images/names_gold_echo.tex" ),
     Asset( "ATLAS", "images/names_gold_echo.xml" ),
+
+    Asset( "IMAGE", "images/inventoryimages/goldcoins.tex" ),
+    Asset( "ATLAS", "images/inventoryimages/goldcoins.xml" ),
+
+    Asset( "IMAGE", "images/inventoryimages/potion01.tex" ),
+    Asset( "ATLAS", "images/inventoryimages/potion01.xml" ),
+
 }
 
 AddMinimapAtlas("images/map_icons/suri.xml")
@@ -196,7 +207,7 @@ local GENERIC = STRINGS.CHARACTERS.GENERIC.DESCRIBE
 
 STRINGS.CHARACTER_TITLES.suri = "The Goobah Emperor"
 STRINGS.CHARACTER_NAMES.suri = "Suri Solari"
-STRINGS.CHARACTER_DESCRIPTIONS.suri = "*Goobism"
+STRINGS.CHARACTER_DESCRIPTIONS.suri = "*Chronic Goobism"
 STRINGS.CHARACTER_QUOTES.suri = "\"Wahh Rrah Grahh\""
 STRINGS.CHARACTER_SURVIVABILITY.suri = "Slim"
 --
@@ -215,7 +226,7 @@ STRINGS.CHARACTER_SURVIVABILITY.meeta = "Slim"
 STRINGS.CHARACTER_TITLES.maeve = "The Pink Ninja"
 STRINGS.CHARACTER_NAMES.maeve = "Maeve Kagekiri"
 STRINGS.CHARACTER_DESCRIPTIONS.maeve = "*Soulsborne Addiction"
-STRINGS.CHARACTER_QUOTES.maeve = "\"Hrm\""
+STRINGS.CHARACTER_QUOTES.maeve = "\"Hey Mae! I'm a ninja.\""
 STRINGS.CHARACTER_SURVIVABILITY.maeve = "Slim"
 --
 STRINGS.CHARACTER_TITLES.echo = "The Cyborg Boss"
@@ -245,7 +256,9 @@ STRINGS.SKIN_NAMES.echo_none = "echo"
 STRINGS.NAMES.CYONCANE = "Cyon's Cane"
 STRINGS.NAMES.CYONHAT = "Cyon's Hat"
 STRINGS.NAMES.MEETAHAT = "Meeta's Hat"
+STRINGS.NAMES.POTION01 = "Meeta's Potion 1"
 STRINGS.NAMES.MAEVESWORD = "Maeve's Katana"
+STRINGS.NAMES.GOLDCOINS = "Suri's Gold Coins"
 
 --Custom item text
 NAMES.GOOBAH_SPAWNER = "Goobah Spawner"
@@ -272,25 +285,53 @@ local skin_modes = {
 local cyon_items_override = 
 {
     cyoncane = {atlas = "images/inventoryimages/cyoncane.xml"},
-    cyonhat = {atlas = "images/inventoryimages/cyonhat.xml"},
+    cyonhat = {atlas = "images/inventoryimages/cyonhat.xml"}
 }
 
 local meeta_items_override = 
 {
     meetahat = {atlas = "images/inventoryimages/meetahat.xml"},
+    potion01 = {atlas = "images/inventoryimages/potion01.xml"}
 }
 
 local maeve_items_override = 
 {
-    maevesword = {atlas = "images/inventoryimages/maevesword.xml"},
+    maevesword = {atlas = "images/inventoryimages/maevesword.xml"}
+}
+
+local suri_items_override = 
+{
+    goldcoins = {atlas = "images/inventoryimages/goldcoins.xml"}
 }
 
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, cyon_items_override) or cyon_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, meeta_items_override) or meeta_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, maeve_items_override) or maeve_items_override
+TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, suri_items_override) or suri_items_override
 
 AddModCharacter("suri", "FEMALE", skin_modes)
 AddModCharacter("cyon", "FEMALE", skin_modes)
 AddModCharacter("meeta", "FEMALE", skin_modes)
 AddModCharacter("maeve", "FEMALE", skin_modes)
 AddModCharacter("echo", "FEMALE", skin_modes)
+
+local gold_buff_duration = 5
+
+local function gold_attach(inst, target)
+    if target.components.health ~= nil then
+        target.components.combat.externaldamagemultipliers:SetModifier(inst, 2.0, "damage_from_gold")
+        target.components.combat.externaldamagetakenmultipliers:SetModifier(inst, 2.0, "damage_from_gold")
+    end
+end
+
+local function gold_detach(inst, target)
+    if target.components.health ~= nil then
+        target.components.combat.externaldamagemultipliers:RemoveModifier(inst, "damage_from_gold")
+    end
+end
+
+local function create_gold_buff(inst)
+    MakeBuff("gold_buff", gold_attach, nil, gold_detach, gold_buff_duration, 2)
+end
+
+AddPrefabPostInit("foodbuffs", create_gold_buff)
