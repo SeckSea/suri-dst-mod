@@ -53,6 +53,9 @@ Assets = {
 	
 	Asset( "IMAGE", "images/names_suri.tex" ),
     Asset( "ATLAS", "images/names_suri.xml" ),
+
+    Asset("IMAGE", "images/crafting_menu_avatars/avatar_suri.tex"),
+    Asset("ATLAS", "images/crafting_menu_avatars/avatar_suri.xml"),
 	
 	Asset( "IMAGE", "images/names_gold_suri.tex" ),
     Asset( "ATLAS", "images/names_gold_suri.xml" ),
@@ -122,6 +125,9 @@ Assets = {
 
 	Asset("IMAGE", "images/names_meeta.tex"),
     Asset("ATLAS", "images/names_meeta.xml"),
+
+    Asset("IMAGE", "images/crafting_menu_avatars/avatar_meeta.tex"),
+    Asset("ATLAS", "images/crafting_menu_avatars/avatar_meeta.xml"),
  --
     Asset( "IMAGE", "images/saveslot_portraits/maeve.tex" ),
     Asset( "ATLAS", "images/saveslot_portraits/maeve.xml" ),
@@ -186,6 +192,9 @@ Assets = {
 	Asset( "IMAGE", "images/names_gold_echo.tex" ),
     Asset( "ATLAS", "images/names_gold_echo.xml" ),
 
+    Asset("IMAGE", "images/crafting_menu_avatars/avatar_echo.tex"),
+    Asset("ATLAS", "images/crafting_menu_avatars/avatar_echo.xml"),
+
     Asset( "IMAGE", "images/inventoryimages/goldcoins.tex" ),
     Asset( "ATLAS", "images/inventoryimages/goldcoins.xml" ),
 
@@ -193,6 +202,9 @@ Assets = {
     Asset( "ATLAS", "images/inventoryimages/potion01.xml" ),
 
 }
+
+-- Test if STRINGS is available
+
 
 AddMinimapAtlas("images/map_icons/suri.xml")
 AddMinimapAtlas("images/map_icons/cyon.xml")
@@ -314,6 +326,47 @@ AddModCharacter("cyon", "FEMALE", skin_modes)
 AddModCharacter("meeta", "FEMALE", skin_modes)
 AddModCharacter("maeve", "FEMALE", skin_modes)
 AddModCharacter("echo", "FEMALE", skin_modes)
+
+-- Recipes
+--STRINGS.NAMES.SURITAB = "Suri Tab"
+--STRINGS.TABS.SURITAB = "Suri Tab"
+
+STRINGS.RECIPE_DESC.GOLDCOINS = "Shiny and valuable."
+
+local function AddCustomRecipe()
+    local Ingredient = GLOBAL.Ingredient
+    --local AddRecipe2 = GLOBAL.AddRecipe2
+    local RECIPETABS = GLOBAL.RECIPETABS
+    local TECH = GLOBAL.TECH
+
+    -- Debugging: Print statements to check if the function is being called
+    print("AddCustomRecipe function called")
+
+    -- Define the custom recipe
+    local recipe = AddRecipe(
+        "goldcoins", -- The prefab name of your custom item
+        { Ingredient("rocks", 2) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "dragoobah", -- Builder tag (character-specific)
+        "images/inventoryimages/goldcoins.xml", -- Atlas path
+        "images/inventoryimages/goldcoins.tex" -- Texture file
+    )
+
+    -- Debugging: Print statements to check if the recipe is being added
+    if recipe then
+        print("Gold Coins recipe added successfully")
+    else
+        print("Failed to add Gold Coins recipe")
+    end
+end
+
+-- Ensure assets are loaded before adding recipes
+AddSimPostInit(AddCustomRecipe)
 
 local gold_buff_duration = 5
 

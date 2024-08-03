@@ -44,9 +44,9 @@ local function onequip(inst, owner)
 	local skin_build = inst:GetSkinBuild()
 	if skin_build ~= nil then
 		owner:PushEvent("equipskinneditem", inst:GetSkinName())
-		owner.AnimState:OverrideItemSkinSymbol("swap_object", skin_build, "swap_bomb_lunarplant", inst.GUID, "bomb_lunarplant")
+		owner.AnimState:OverrideItemSkinSymbol("swap_object", skin_build, "swap_bomb_lunarplant", inst.GUID, "potion01")
 	else
-		owner.AnimState:OverrideSymbol("swap_object", "bomb_lunarplant", "swap_bomb_lunarplant")
+		owner.AnimState:OverrideSymbol("swap_object", "potion01", "swap_bomb_lunarplant")
 	end
 	owner.AnimState:Show("ARM_carry")
 	owner.AnimState:Hide("ARM_normal")
@@ -103,8 +103,8 @@ local function CreateSpinCore()
 	inst.entity:AddAnimState()
 	inst.entity:AddFollower()
 
-	inst.AnimState:SetBank("bomb_lunarplant")
-	inst.AnimState:SetBuild("bomb_lunarplant")
+	inst.AnimState:SetBank("potion01")
+	inst.AnimState:SetBuild("potion01")
 	inst.AnimState:PlayAnimation("spin_idle")
 	inst.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
 

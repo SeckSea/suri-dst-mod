@@ -52,7 +52,7 @@ end
 
 local common_postinit = function(inst) 
 	inst:AddTag("expertchef")
-    inst:AddTag("pyromaniac")
+    --inst:AddTag("pyromaniac")
     inst:AddTag("heatresistant")
     inst:AddTag("dragoobah")
 	inst.MiniMapEntity:SetIcon( "suri.tex" )
@@ -65,7 +65,7 @@ local common_postinit = function(inst)
             return		
         end		
         
-        if item.components.equippable.equipslot == EQUIPSLOTS.BODY or item.components.equippable.equipslot == EQUIPSLOTS.HEAD and not (item.prefab == "boarhat") then		
+        if item.components.equippable.equipslot == EQUIPSLOTS.BODY or item.components.equippable.equipslot == EQUIPSLOTS.HEAD then		
             self:DropItem(item)
             self:GiveItem(item)
             if inst and inst.components.talker then
