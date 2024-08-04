@@ -17,6 +17,7 @@ TUNING.MEETA_SANITY = 125
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.MEETA = 
 {
 	"meetahat",
+    "potion01",
 }
 
 local start_inv = {}
