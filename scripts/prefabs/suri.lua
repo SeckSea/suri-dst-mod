@@ -14,13 +14,13 @@ TUNING.SURI_HUNGER = 200
 TUNING.SURI_SANITY = 125
 
 
-TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.suri = {
+TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.SURI = {
 	"goldnugget",
 }
 
 local start_inv = {}
 for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
-   start_inv[string.lower(k)] = v.suri
+   start_inv[string.lower(k)] = v.SURI
 end
 
 local prefabs = FlattenTree(start_inv, true)
@@ -51,9 +51,9 @@ local function onload(inst)
 end
 
 local common_postinit = function(inst) 
-	inst:AddTag("expertchef")
     inst:AddTag("pyromaniac")
     inst:AddTag("heatresistant")
+    inst:AddTag("efficient_sleeper")
 	inst.MiniMapEntity:SetIcon( "suri.tex" )
 end
 

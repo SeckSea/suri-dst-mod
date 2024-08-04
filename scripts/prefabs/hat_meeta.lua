@@ -13,7 +13,11 @@ local function OnEquip(inst, owner)
 	owner.AnimState:Hide("HAIR_NOHAT")
 	owner.AnimState:Hide("HAIR")
 	
-	inst.components.equippable.dapperness = TUNING.DAPPERNESS_SMALL
+	if owner:HasTag("witch") then
+		owner.components.combat.externaldamagemultipliers:SetModifier(inst, 0.8, "hat_damage")
+	end
+
+	inst.components.equippable.dapperness = TUNING.DAPPERNESS_MED
 
 	if owner:HasTag("player") then
 		owner.AnimState:Hide("HEAD")
@@ -31,6 +35,10 @@ local function OnUnequip(inst, owner)
 	owner.AnimState:Hide("HAIR_HAT")
 	owner.AnimState:Show("HAIR_NOHAT")
 	owner.AnimState:Show("HAIR")
+
+	if owner:HasTag("witch") then
+		owner.components.combat.externaldamagemultipliers:RemoveModifier(inst, "hat_damage")  
+	end
 
 	if owner:HasTag("player") then
 		owner.AnimState:Show("HEAD")

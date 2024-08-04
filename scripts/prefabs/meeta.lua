@@ -46,7 +46,8 @@ local function onload(inst)
 end
 
 local common_postinit = function(inst) 
-	inst:AddTag("")
+	inst:AddTag("witch")
+    inst:AddTag("expertchef")
     inst:AddTag("handyperson")
     inst:AddTag("fastbuilder")
 	inst.MiniMapEntity:SetIcon( "meeta.tex" )
@@ -61,7 +62,7 @@ local master_postinit = function(inst)
 	inst.components.hunger:SetMax(TUNING.MEETA_HUNGER)
 	inst.components.sanity:SetMax(TUNING.MEETA_SANITY)
 	
-    inst.components.combat.damagemultiplier = 1.0
+    inst.components.combat.damagemultiplier = 0.9
 	inst.components.hunger.hungerrate = 1.0 * TUNING.WILSON_HUNGER_RATE
 
     
