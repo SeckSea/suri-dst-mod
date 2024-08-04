@@ -21,6 +21,8 @@ PrefabFiles = {
     "potion01",
     --"potion02",
     --"potion03"
+    "echogun",
+   -- "echobullets",
 }
 
 Assets = {
@@ -192,6 +194,12 @@ Assets = {
 	Asset( "IMAGE", "images/names_gold_echo.tex" ),
     Asset( "ATLAS", "images/names_gold_echo.xml" ),
 
+    Asset("IMAGE", "images/inventoryimages/echogun.tex"),
+    Asset("ATLAS", "images/inventoryimages/echogun.xml"),
+
+  --  Asset("IMAGE", "images/inventoryimages/echobullets.tex"),
+   -- Asset("ATLAS", "images/inventoryimages/echobullets.xml"),
+
     Asset("IMAGE", "images/crafting_menu_avatars/avatar_echo.tex"),
     Asset("ATLAS", "images/crafting_menu_avatars/avatar_echo.xml"),
 
@@ -270,6 +278,7 @@ STRINGS.NAMES.CYONHAT = "Cyon's Hat"
 STRINGS.NAMES.MEETAHAT = "Meeta's Hat"
 STRINGS.NAMES.POTION01 = "Meeta's Potion 1"
 STRINGS.NAMES.MAEVESWORD = "Maeve's Katana"
+STRINGS.NAMES.ECHOGUN = "Echo's Gun"
 STRINGS.NAMES.GOLDCOINS = "Suri's Gold Coins"
 
 --Custom item text
@@ -316,7 +325,13 @@ local suri_items_override =
     goldcoins = {atlas = "images/inventoryimages/goldcoins.xml"}
 }
 
+local echo_items_override = 
+{
+    maevesword = {atlas = "images/inventoryimages/echogun.xml"},
+}
+
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, cyon_items_override) or cyon_items_override
+TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, echo_items_override) or echo_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, meeta_items_override) or meeta_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, maeve_items_override) or maeve_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, suri_items_override) or suri_items_override

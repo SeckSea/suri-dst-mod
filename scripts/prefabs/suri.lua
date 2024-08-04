@@ -51,10 +51,8 @@ local function onload(inst)
 end
 
 local common_postinit = function(inst) 
-	inst:AddTag("expertchef")
     --inst:AddTag("pyromaniac")
     inst:AddTag("heatresistant")
-    inst:AddTag("dragoobah")
 	inst.MiniMapEntity:SetIcon( "suri.tex" )
     inst:AddComponent("inventory")
 

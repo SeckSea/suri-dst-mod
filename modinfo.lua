@@ -1,5 +1,5 @@
 name = "I Did This Here"
-description = "A mod made for Suri Solari by her loyal followers; as thanks for all she does.\n\n<Credits>\n-Key Art: POWD3d4\n-Coding: SeckSea, MottledAbyss\n-Dialouge Lead: Ries(りえす)\n-Key Dialouge: The Covenant\n-Community Organizer: master117"
+description = "Oracle Mod \n\n<Credits>\n-Key Art: POWD3d4\n-Coding: SeckSea, MottledAbyss\n-Dialogue Lead: Ries(りえす), Toy Dino, Bagged Milk, Smaug\n-Key Dialouge: The Covenant\n-Community Organizer: master117"
 
 author = "The Covenant"
 version = "1.2.5"

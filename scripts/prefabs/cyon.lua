@@ -28,7 +28,7 @@ end
 local prefabs = FlattenTree(start_inv, true)
 
 local function onbecamehuman(inst)
-	inst.components.locomotor:SetExternalSpeedMultiplier(inst, "cyon_speed_mod", 1.2)
+	inst.components.locomotor:SetExternalSpeedMultiplier(inst, "cyon_speed_mod", 1.0)
 end
 
 local function onbecameghost(inst)
