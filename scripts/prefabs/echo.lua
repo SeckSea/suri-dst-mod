@@ -15,7 +15,7 @@ TUNING.ECHO_SANITY = 100
 
 
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.ECHO = {
-   -- "echogun",
+   "echogun",
 }
 
 local start_inv = {}
