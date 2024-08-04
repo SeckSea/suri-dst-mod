@@ -21,7 +21,7 @@ PrefabFiles = {
     "potion01",
     --"potion02",
     --"potion03"
-    "echogun",
+  --  "echogun",
    -- "echobullets",
 }
 
@@ -194,8 +194,8 @@ Assets = {
 	Asset( "IMAGE", "images/names_gold_echo.tex" ),
     Asset( "ATLAS", "images/names_gold_echo.xml" ),
 
-    Asset("IMAGE", "images/inventoryimages/echogun.tex"),
-    Asset("ATLAS", "images/inventoryimages/echogun.xml"),
+   -- Asset("IMAGE", "images/inventoryimages/echogun.tex"),
+  --  Asset("ATLAS", "images/inventoryimages/echogun.xml"),
 
   --  Asset("IMAGE", "images/inventoryimages/echobullets.tex"),
    -- Asset("ATLAS", "images/inventoryimages/echobullets.xml"),
@@ -325,10 +325,10 @@ local suri_items_override =
     goldcoins = {atlas = "images/inventoryimages/goldcoins.xml"}
 }
 
-local echo_items_override = 
+--[[local echo_items_override = 
 {
-    maevesword = {atlas = "images/inventoryimages/echogun.xml"},
-}
+-   echogun = {atlas = "images/inventoryimages/echogun.xml"},
+}]]
 
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, cyon_items_override) or cyon_items_override
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE = type(TUNING.STARTING_ITEM_IMAGE_OVERRIDE) == "table" and GLOBAL.MergeMaps(TUNING.STARTING_ITEM_IMAGE_OVERRIDE, echo_items_override) or echo_items_override
