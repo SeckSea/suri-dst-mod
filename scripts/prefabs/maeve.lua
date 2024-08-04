@@ -14,13 +14,13 @@ TUNING.MAEVE_HUNGER = 125
 TUNING.MAEVE_SANITY = 125
 
 
-TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.maeve = {
+TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.MAEVE = {
 	"maevesword",
 }
 
 local start_inv = {}
 for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
-   start_inv[string.lower(k)] = v.maeve
+   start_inv[string.lower(k)] = v.MAEVE
 end
 
 local prefabs = FlattenTree(start_inv, true)

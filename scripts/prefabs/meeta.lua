@@ -17,6 +17,7 @@ TUNING.MEETA_SANITY = 125
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.MEETA = 
 {
 	"meetahat",
+    "potion01",
 }
 
 local start_inv = {}
@@ -47,7 +48,7 @@ end
 
 local common_postinit = function(inst) 
 	inst:AddTag("")
-    inst:AddTag("handyperson")
+    --inst:AddTag("handyperson")
     inst:AddTag("fastbuilder")
 	inst.MiniMapEntity:SetIcon( "meeta.tex" )
 end
