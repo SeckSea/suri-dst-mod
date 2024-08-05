@@ -1,28 +1,23 @@
-local assets =
-{
-    Asset("ANIM", "anim/slingshotammo.zip"),
-}
-
-local assets =
-{
-    Asset("ANIM", "anim/slingshotammo.zip"),
-}
-
-
-local assets =
-{
-    Asset("ANIM", "anim/slingshotammo.zip"),
+local assets = {
+    Asset("ANIM", "anim/echobullets.zip"),
 }
 
 local function onThrown(inst, owner, target, attacker)
     inst:AddTag("NOCLICK")
     inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround)
+    --[[
+    if not inst.components.inventoryitem then
+        owner.components.finiteuses:Use()
+        inst:Remove()
+    end
+    ]]
 end
 
+--[[
 local function ImpactFx(inst, attacker, target)
     if target ~= nil and target:IsValid() then
-		local impactfx = SpawnPrefab("slingshotammo_hitfx_rock")
-		impactfx.Transform:SetPosition(target.Transform:GetWorldPosition())
+        local impactfx = SpawnPrefab("slingshotammo_hitfx_rock")
+        impactfx.Transform:SetPosition(target.Transform:GetWorldPosition())
     end
 end
 
@@ -31,6 +26,7 @@ local function OnAttack(inst, attacker, target)
         ImpactFx(inst, attacker, target)
     end
 end
+]]
 
 local function MainFunction()
     local inst = CreateEntity()
@@ -46,33 +42,30 @@ local function MainFunction()
     RemovePhysicsColliders(inst)
 
     inst.entity:AddNetwork()
-    inst.Transform:SetFourFaced()
-    MakeProjectilePhysics(inst)
-    inst.AnimState:SetBank("slingshotammo")
-    inst.AnimState:SetBuild("slingshotammo")
-    inst.AnimState:PlayAnimation("spin_loop", true)
+    --inst.Transform:SetFourFaced()
+    --MakeProjectilePhysics(inst)
+    --inst.AnimState:SetBank("echobullets")
+    --inst.AnimState:SetBuild("echobullets")
+    --inst.AnimState:PlayAnimation("spin_loop", true)
     --projectile (from projectile component) added to pristine state for optimization
-    inst:AddTag("projectile")
+    --inst:AddTag("projectile")
     inst.entity:SetPristine()
-    if not TheWorld.ismastersim then
-        return inst
-    end
-    inst.persists = false
+    if not TheWorld.ismastersim then return inst end
+    -- inst.persists = false
     inst:AddComponent("weapon")
     inst.components.weapon:SetDamage(TUNING.SLINGSHOT_AMMO_DAMAGE_ROCKS)
-    inst.components.weapon:SetOnAttack(OnAttack)
+    inst.components.weapon:SetRange(15, 30)
 
     inst:AddComponent("projectile")
     inst.components.projectile:SetSpeed(25)
-    inst.components.projectile:SetHoming(false)
-    inst.components.projectile:SetHitDist(1.5)
+    inst.components.projectile:SetLaunchOffset(Vector3(1, 1, 0))
     inst.components.projectile:SetOnHitFn(inst.Remove)
     inst.components.projectile:SetOnMissFn(inst.Remove)
     inst.components.projectile:SetOnThrownFn(onThrown)
-    inst.components.projectile.range = 30
-    inst.components.projectile.has_damage_set = true
+    -- inst.components.projectile.range = 30
+    -- inst.components.projectile.has_damage_set = true
 
     return inst
 end
 
-return Prefab("common/inventory/echobullets", MainFunction, assets)
+return Prefab("echobullets", MainFunction, assets)
