@@ -84,7 +84,7 @@ local function monstersanityfn(inst)
 end
 
 local common_postinit = function(inst) 
-	inst:AddTag("")
+	inst:AddTag("ninja")
 	inst.MiniMapEntity:SetIcon( "maeve.tex" )
 end
 

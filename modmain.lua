@@ -211,9 +211,6 @@ Assets = {
 
 }
 
--- Test if STRINGS is available
-
-
 AddMinimapAtlas("images/map_icons/suri.xml")
 AddMinimapAtlas("images/map_icons/cyon.xml")
 AddMinimapAtlas("images/map_icons/meeta.xml")
@@ -342,11 +339,11 @@ AddModCharacter("meeta", "FEMALE", skin_modes)
 AddModCharacter("maeve", "FEMALE", skin_modes)
 AddModCharacter("echo", "FEMALE", skin_modes)
 
--- Recipes
---STRINGS.NAMES.SURITAB = "Suri Tab"
---STRINGS.TABS.SURITAB = "Suri Tab"
+------ Recipes ------
 
 STRINGS.RECIPE_DESC.GOLDCOINS = "Shiny and valuable."
+STRINGS.RECIPE_DESC.MAEVESWORD = "I'm a ninja."
+STRINGS.RECIPE_DESC.POTION01 = "I wonder what this does."
 
 local function AddCustomRecipe()
     local Ingredient = GLOBAL.Ingredient
@@ -370,6 +367,104 @@ local function AddCustomRecipe()
         "dragoobah", -- Builder tag (character-specific)
         "images/inventoryimages/goldcoins.xml", -- Atlas path
         "images/inventoryimages/goldcoins.tex" -- Texture file
+    )
+
+    local recipe2 = AddRecipe(
+        "maevesword", -- The prefab name of your custom item
+        { Ingredient("rocks", 2), Ingredient("twigs", 3) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "ninja", -- Builder tag (character-specific)
+        "images/inventoryimages/maevesword.xml", -- Atlas path
+        "images/inventoryimages/maevesword.tex" -- Texture file
+    )
+
+    local recipe3 = AddRecipe(
+        "potion01", -- The prefab name of your custom item
+        { Ingredient("rocks", 2), Ingredient("twigs", 4) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "witch", -- Builder tag (character-specific)
+        "images/inventoryimages/potion01.xml", -- Atlas path
+        "images/inventoryimages/potion01.tex" -- Texture file
+    )
+
+    --[[local recipe4 = AddRecipe(
+        "potion02", -- The prefab name of your custom item
+        { Ingredient("rocks", 2), Ingredient("twigs", 2) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "witch", -- Builder tag (character-specific)
+        "images/inventoryimages/potion02.xml", -- Atlas path
+        "images/inventoryimages/potion02.tex" -- Texture file
+    )
+
+    local recipe5 = AddRecipe(
+        "potion03", -- The prefab name of your custom item
+        { Ingredient("rocks", 2), Ingredient("twigs", 2) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "witch", -- Builder tag (character-specific)
+        "images/inventoryimages/potion03.xml", -- Atlas path
+        "images/inventoryimages/potion03.tex" -- Texture file
+    )]]
+
+    local recipe6 = AddRecipe(
+        "hat_meeta", -- The prefab name of your custom item
+        { Ingredient("petals", 2), Ingredient("twigs", 2) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "witch", -- Builder tag (character-specific)
+        "images/inventoryimages/meetahat.xml", -- Atlas path
+        "images/inventoryimages/meetahat.tex" -- Texture file
+    )
+
+    local recipe7 = AddRecipe(
+        "hat_cyon", -- The prefab name of your custom item
+        { Ingredient("petals", 3), Ingredient("twigs", 2) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "tanuki", -- Builder tag (character-specific)
+        "images/inventoryimages/cyonhat.xml", -- Atlas path
+        "images/inventoryimages/cyonhat.tex" -- Texture file
+    )
+
+    local recipe8 = AddRecipe(
+        "cyoncane", -- The prefab name of your custom item
+        { Ingredient("twigs", 4) }, -- Ingredients
+        RECIPETABS.SURVIVAL, -- The tab where your recipe will appear
+        TECH.NONE, -- Tech level
+        nil, -- No placer (optional)
+        nil, -- No min spacing (optional)
+        nil, -- No nounlock (optional)
+        nil,
+        "tanuki", -- Builder tag (character-specific)
+        "images/inventoryimages/cyoncane.xml", -- Atlas path
+        "images/inventoryimages/cyoncane.tex" -- Texture file
     )
 
     -- Debugging: Print statements to check if the recipe is being added
