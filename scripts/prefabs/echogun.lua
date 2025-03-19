@@ -1,5 +1,4 @@
-local Assets =
-{
+local Assets = {
     Asset("ANIM", "anim/swap_echogun.zip"),
 
     Asset("ATLAS", "images/inventoryimages/echogun.xml"),
@@ -31,27 +30,27 @@ end
 
 -- stolen from another mod
 local function FindTarget(doer, pos)
-	local x, y, z = pos:Get()
-	local range = 4
-	if doer.components.playercontroller.isclientcontrollerattached then
-		range = 15
-	end
-	local minDist = nil;
-	local target = nil;
-	for k,v in pairs(TheSim:FindEntities(x, y, z, range, nil, {"wall"})) do
-		if FUNCS.CheckTarget(doer.replica.combat, v) then
-			local tmpDist = (pos - v:GetPosition()).magnitude
-			if not minDist or tmpDist < minDist then
-				minDist = tmpDist
-				target = v
-			end
-		end
-	end
-	return target
+    local x, y, z = pos:Get()
+    local range = 4
+    if doer.components.playercontroller.isclientcontrollerattached then
+        range = 15
+    end
+    local minDist = nil;
+    local target = nil;
+    for k,v in pairs(TheSim:FindEntities(x, y, z, range, nil, {"wall"})) do
+        if FUNCS.CheckTarget(doer.replica.combat, v) then
+            local tmpDist = (pos - v:GetPosition()).magnitude
+            if not minDist or tmpDist < minDist then
+                minDist = tmpDist
+                target = v
+            end
+        end
+    end
+    return target
 end
 
 local function CheckTarget(combat, target)
-	return combat and combat:CanTarget(target) and not combat:IsAlly(target) and not target:HasTag("wall")
+    return combat and combat:CanTarget(target) and not combat:IsAlly(target) and not target:HasTag("wall")
 end
 -- end stolen
 
